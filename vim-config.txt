@@ -1,0 +1,50 @@
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+set splitbelow splitright
+set number
+set listchars=eol:$,tab:>\ ,trail:~,extends:>,precedes:<
+"set list
+imap jj <Esc>
+set path=.,/usr/include,/Library/Developer/CommandLineTools/usr/include/c++/v1/,,
+
+packadd termdebug
+
+"Autocomplete
+inoremap <expr> ` TabComplete()
+fun! TabComplete()
+    if getline('.')[col('.') - 2] =~ '\K' || pumvisible()
+        return "\<C-P>"
+    else
+        return "\<Tab>"
+    endif
+endfun
+
+" Minimalist-AutoCompletePop-Plugin
+set completeopt=menu,menuone,noinsert
+inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
+autocmd InsertCharPre * call AutoComplete()
+fun! AutoComplete()
+    if v:char =~ '\K'
+        \ && getline('.')[col('.') - 4] !~ '\K'
+        \ && getline('.')[col('.') - 3] =~ '\K'
+        \ && getline('.')[col('.') - 2] =~ '\K' " last char
+        \ && getline('.')[col('.') - 1] !~ '\K'
+
+        call feedkeys("\<C-P>", 'n')
+    end
+endfun
+
+" Vim plug
+call plug#begin()
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'mattn/emmet-vim'
+Plug 'wadackel/vim-dogrun'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'vim-syntastic/syntastic'
+Plug 'alexandregv/norminette-vim'
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug '42Paris/42header'
